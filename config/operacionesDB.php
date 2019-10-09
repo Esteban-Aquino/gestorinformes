@@ -153,6 +153,92 @@ class operacionesDB
             return false;
         }
     }
+    
+    /**
+     * Retorna datos de venta de ayer
+     *
+     * @param Nada
+     * @return ventas del dia
+     */
+     public static function getVentasMarca($p_fec_des, $p_fec_has)
+    {
+        $consulta = "SELECT MARCA,
+                    SUM(VENTAS) VENTAS,
+                    SUM(VENTAS_ANIO_PAST) VENTAS_ANIO_PAST,
+                    ROUND(DECODE(NVL(SUM(VENTAS_ANIO_PAST), 0),
+                                 0,
+                                 DECODE(NVL(SUM(VENTAS), 0), 0, 0, 999),
+                                 ((NVL(SUM(VENTAS), 0) - NVL(SUM(VENTAS_ANIO_PAST), 0)) /
+                                 NVL(SUM(VENTAS_ANIO_PAST), 0)) * 100),
+                          2) PORC
+               FROM (
+                     /*OPTIMA*/
+                     SELECT M.DESCRIPCION MARCA,
+                             ROUND(SUM(CASE
+                                         WHEN V.FEC_ALTA BETWEEN
+                                              TRUNC(TO_DATE('".$p_fec_des."', 'DD/MM/YYYY')) AND
+                                              TRUNC(TO_DATE('".$p_fec_has."', 'DD/MM/YYYY')) THEN
+                                          V.VENTA_NETA_GS
+                                         ELSE
+                                          0
+                                       END)) VENTAS,
+                             ROUND(SUM(CASE
+                                         WHEN V.FEC_ALTA BETWEEN
+                                              ADD_MONTHS((TRUNC(TO_DATE('".$p_fec_des."', 'DD/MM/YYYY'))),
+                                                         -12) AND
+                                              ADD_MONTHS(TRUNC(TO_DATE('".$p_fec_has."', 'DD/MM/YYYY')), -12) THEN
+                                          V.VENTA_NETA_GS
+                                         ELSE
+                                          0
+                                       END)) VENTAS_ANIO_PAST
+                       FROM REL_MARCA_OP_GP M
+                       JOIN VMATRIZ_VENTA_C_MAT V
+                         ON M.COD_MARCA_OP = V.COD_MARCA
+                      GROUP BY M.DESCRIPCION
+                     UNION ALL
+                     /*GP*/
+                     SELECT M.DESCRIPCION MARCA,
+                            ROUND(SUM(CASE
+                                        WHEN C.FEC_COMPROBANTE BETWEEN
+                                             TRUNC(TO_DATE('".$p_fec_des."', 'DD/MM/YYYY')) AND
+                                             TRUNC(TO_DATE('".$p_fec_has."', 'DD/MM/YYYY')) THEN
+                                         C.TOTAL_GS
+                                        ELSE
+                                         0
+                                      END)) VENTAS,
+                            ROUND(SUM(CASE
+                                        WHEN C.FEC_COMPROBANTE BETWEEN
+                                             ADD_MONTHS((TRUNC(TO_DATE('".$p_fec_des."', 'DD/MM/YYYY'))),
+                                                        -12) AND
+                                             ADD_MONTHS(TRUNC(TO_DATE('".$p_fec_has."', 'DD/MM/YYYY')), -12) THEN
+                                         C.TOTAL_GS
+                                        ELSE
+                                         0
+                                      END)) VENTAS_ANIO_PAST
+                       FROM REL_MARCA_OP_GP M
+                       JOIN VVT_VTA_TOTAL_MAT@GUATA C
+                         ON C.COD_MARCA = M.COD_MARCA_OP
+                      GROUP BY M.DESCRIPCION)
+              GROUP BY MARCA
+              HAVING SUM(VENTAS) != 0 OR  SUM(VENTAS_ANIO_PAST) != 0
+             ORDER BY 2 DESC
+             ";
+             //print $consulta;
+        try {
+            // Preparar sentencia
+            $comando = oraconnect::getInstance()->getDb()->query($consulta);
+            // Ejecutar sentencia preparada
+            //$comando->execute(array($nombre));
+            $comando->execute();
+            $result = $comando->fetchAll(PDO::FETCH_ASSOC);
+
+            return utf8_converter($result);
+
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+    
   
   
     

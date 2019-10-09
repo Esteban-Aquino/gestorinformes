@@ -8,7 +8,8 @@ $.ready(inicializaPrincipal());
 function inicializaPrincipal() {
     // verificar si tiene session abierta
     validadSesion();
-    cargar_formulario('frm/dashboard');
+    //cargar_formulario('frm/dashboard');
+    cargar_formulario('frm/DashVentasMarcas');
     $('#nombre_usuario').text(datosUsuario('nombre'));
     $('#log_out').on('click',function(){
         sessionStorage.setItem("datos_usuario", "");

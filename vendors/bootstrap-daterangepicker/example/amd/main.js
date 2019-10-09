@@ -79,14 +79,14 @@ $(document).ready(function() {
 
     if ($('#locale').is(':checked')) {
       options.locale = {
-        format: 'MM/DD/YYYY HH:mm',
+        format: 'DD/MM/YYYY HH:mm',
         separator: ' - ',
-        applyLabel: 'Apply',
+        applyLabel: 'Aplicar',
         cancelLabel: 'Cancel',
         fromLabel: 'From',
         toLabel: 'To',
         customRangeLabel: 'Custom',
-        daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+        daysOfWeek: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi','Sa'],
         monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         firstDay: 1
       };
@@ -131,9 +131,9 @@ $(document).ready(function() {
     if ($('#cancelClass').val().length && $('#cancelClass').val() != 'btn-default')
       options.cancelClass = $('#cancelClass').val();
 
-    $('#config-text').val("$('#demo').daterangepicker(" + JSON.stringify(options, null, '    ') + ", function(start, end, label) {\n  console.log(\"New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')\");\n});");
+    $('#config-text').val("$('#demo').daterangepicker(" + JSON.stringify(options, null, '    ') + ", function(start, end, label) {\n  console.log(\"New date range selected: ' + start.format('DD-MM-YYYY') + ' to ' + end.format('DD-MM-YYYY') + ' (predefined range: ' + label + ')\");\n});");
 
-    $('#config-demo').daterangepicker(options, function(start, end, label) { console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')'); });
+    $('#config-demo').daterangepicker(options, function(start, end, label) { console.log('New date range selected: ' + start.format('DD-MM-YYYY') + ' to ' + end.format('DD-MM-YYYY') + ' (predefined range: ' + label + ')'); });
 
   }
 

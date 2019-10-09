@@ -39,5 +39,8 @@
     }else{
         //http_response_code(200);
     }
+    // agregar cabecera
+    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Headers: *');
     print json_encode($respuesta);
 ?>

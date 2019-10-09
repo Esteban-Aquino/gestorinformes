@@ -65,6 +65,10 @@ function GetVentasDiaSuccess(json){
     $('#ventas_dia_color').addClass(vcolor);
     $('#ventas_dia_flecha').removeClass();
     $('#ventas_dia_flecha').addClass(vflecha);
+    
+    $('#cargando-ventas-dia').addClass('oculto');
+    $('#div-ventas-dia').removeClass('oculto');
+    $('#div-ventas-dia-past').removeClass('oculto-d');
     console.log("Ventas Dia Cargado");
 }
 // Ayer
@@ -109,6 +113,11 @@ function GetVentasAyerSuccess(json){
     $('#ventas_ayer_color').addClass(vcolor);
     $('#ventas_ayer_flecha').removeClass();
     $('#ventas_ayer_flecha').addClass(vflecha);
+    
+    $('#cargando-ventas-ayer').addClass('oculto');
+    $('#div-ventas-ayer').removeClass('oculto');
+    $('#div-ventas-ayer-past').removeClass('oculto-d');
+    
     console.log("Ventas Ayer Cargado");
 }
 

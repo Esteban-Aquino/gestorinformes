@@ -105,8 +105,8 @@ function ValidarAccesoAjaxSuccess(json) {
     ;
 }
 
-function ajax_error() {
-    mensaje('No se puede conectar a la Base de datos', 'Aceptar', '');
+function ajax_error(vmens) {
+    mensaje(vmens, 'Aceptar', '');
 }
 
 function siguienteCampo(actual, siguiente, preventDefault) {

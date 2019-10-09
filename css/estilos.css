@@ -8,8 +8,8 @@ and open the template in the editor.
     Author     : Esteban
 */
 body {
-    /*background-image: url("../img/fondo2.jpg");*/
-    background-color: #fffcf2 !important;
+    background-image: url("../img/fondo.jpg");
+    /*background-color: #fffcf2 !important;*/
     background-size: cover;
     background-attachment: fixed;
 }
@@ -25,7 +25,8 @@ body {
 }
 
 #formAcceso img {
-    margin-bottom: 10px;
+    margin-bottom: 0px;
+    margin-left: 50px;
 }
 
 /*#img_fondo{

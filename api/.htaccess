@@ -6,5 +6,6 @@ Rewriterule ^getventasayer$ GetVentasAyer.php
 Rewriterule ^getventasdia$ GetVentasDia.php
 Rewriterule ^getdetalleventasdia$ GetDetalleVentasdia.php
 Rewriterule ^getdetalleventasayer$ GetDetalleVentasAyer.php
+Rewriterule ^getventasmarca$ GetVentasMarca.php
 
 
