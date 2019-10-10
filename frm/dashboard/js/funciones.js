@@ -4,6 +4,7 @@
  * Descripcion: Funciones del Dashboard
  */
 $.ready(inicializa());
+var interval;
 function inicializa() {
     validadSesion();
     cargar();
@@ -22,7 +23,7 @@ function cargar(){
     GetVentasAyer();
 }
 function Repetir() {
-    setInterval("cargar()", 30000);
+    this.interval = setInterval("cargar()", 30000);
 }
 function GetVentasDia(){
     var pUrl= 'api/getventasdia';

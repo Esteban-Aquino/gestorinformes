@@ -40,10 +40,11 @@ function GetVentasSuccess(json) {
         ajax_error(json['mensaje']);
     } else {
         var jsonDatos = json['datos'];
-        var marca, ventas, proc_ventas, proc_ant;
+        var codigo, marca, ventas, proc_ventas, proc_ant;
         $('#kpi-card').html("");
         $.each(jsonDatos, function (key, value) {
             //console.log(value.MARCA);
+            codigo = value.COD_MARCA;
             marca = value.MARCA;
             ventas = Math.round((parseInt(value.VENTAS) / 1000000) * 100) / 100||0;
             proc_ventas = Math.round(parseInt(value.PORC))||0;
@@ -52,7 +53,7 @@ function GetVentasSuccess(json) {
             if (parseInt(proc_ventas) > 500) {
                 proc_ventas = "+500";
             }
-            genera_kpi(marca, ventas, proc_ventas, proc_ant, '#kpi-card');
+            genera_kpi(codigo, marca, ventas, proc_ventas, proc_ant, '#kpi-card','frm/ventasRubro');
             
             //console.log("Ventas Dia Cargado");
         });
@@ -60,9 +61,26 @@ function GetVentasSuccess(json) {
     }
 }
 
+function params($dato,frm){
+    
+    var marca = $dato.find('#codigo').text();
+    var desc_marca = $dato.find('.count_top b').text();
+    var fec_desde = $('#fec_desde').val();
+    var fec_hasta = $('#fec_hasta').val();
+    
+    var params = {
+        cod_marca: marca,
+        desc_marca: desc_marca,
+        fec_desde: fec_desde,
+        fec_hasta: fec_hasta
+    };
+    sessionStorage.setItem('ventasRubro',JSON.stringify(params));
+    cargar_formulario(frm);
+}
 // Ayer
-function genera_kpi(titulo, monto, porc, monto_ant, selector) {
-    var vcolor, vflecha;
+function genera_kpi(codigo,titulo, monto, porc, monto_ant, selector, frm) {
+    var vcolor, vflecha, vfrm;
+    vfrm = frm||'N';
     if (monto > monto_ant) {
         vcolor = 'green';
         vflecha = 'fa fa-sort-asc';
@@ -73,9 +91,15 @@ function genera_kpi(titulo, monto, porc, monto_ant, selector) {
         vcolor = 'grey';
         vflecha = 'fa fa-unsorted';
     }
+    if (vfrm !== 'N'){
+        vfrm = `onclick="params($(this),'`+vfrm+`')"`;
+    }else{
+        vfrm = '';
+    }
 
-    var vkpi_template = `<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                            <div id="` + titulo.replace(/ /g, '') + `" class="x_panel">
+    var vkpi_template = `<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count" `+vfrm+`>
+                            <div id="` + codigo + `" class="x_panel" >
+                                <label id="codigo" class="oculto">`+codigo+`</label>
                                 <div class="x_title">
                                     <span class="count_top"> <b>` + titulo.toUpperCase() + `</b></span>
                                 </div>
@@ -99,6 +123,7 @@ function genera_kpi(titulo, monto, porc, monto_ant, selector) {
                             </div>
                         </div>`;
     $(selector).append(vkpi_template);
+    
 }
 
 
